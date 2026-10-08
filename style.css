@@ -1,0 +1,330 @@
+/* ==========================================================================
+   TITAN RACER — styling
+   Layout: #stage keeps a 9:16 portrait canvas centred in the viewport.
+   ========================================================================== */
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #05070f;
+  color: #eef2ff;
+  font-family: 'Orbitron', 'Segoe UI', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  overflow: hidden;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(1100px 700px at 20% 0%, #16224a 0%, rgba(9,12,24,0) 60%),
+    radial-gradient(900px 700px at 90% 100%, #3a1030 0%, rgba(9,12,24,0) 58%),
+    #05070f;
+}
+
+#stage {
+  position: relative;
+  width: min(100vw, calc(100vh * 9 / 16));
+  width: min(100vw, calc(100dvh * 9 / 16));
+  height: min(100vh, calc(100vw * 16 / 9));
+  height: min(100dvh, calc(100vw * 16 / 9));
+  border-radius: 16px;
+  overflow: hidden;
+  background: #0b1020;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(120, 160, 255, 0.14);
+}
+
+#game {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;      /* stop the browser hijacking drags */
+  cursor: grab;
+}
+#game:active { cursor: grabbing; }
+
+/* ------------------------------------------------------------ in-game UI */
+#topbar {
+  position: absolute;
+  top: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+body.in-game #topbar { opacity: 0.9; pointer-events: auto; }
+
+.icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(150, 180, 255, 0.28);
+  background: rgba(8, 12, 26, 0.6);
+  color: #dbe6ff;
+  font-size: 17px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: transform 0.12s ease, background 0.2s ease;
+}
+.icon:hover { background: rgba(30, 46, 92, 0.8); transform: translateY(-1px); }
+.icon.muted { color: #ff8a8a; border-color: rgba(255, 120, 120, 0.4); }
+
+/* ------------------------------------------------------- touch controls */
+#touch {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 34%;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease;
+}
+#touch.show { opacity: 1; visibility: visible; }
+
+.tbtn {
+  position: absolute;
+  bottom: 4%;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 1px solid rgba(160, 190, 255, 0.35);
+  background: rgba(10, 16, 32, 0.55);
+  color: #e8f0ff;
+  font-size: 22px;
+  font-weight: 800;
+  font-family: inherit;
+  display: grid;
+  place-items: center;
+  pointer-events: auto;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  user-select: none;
+  transition: transform 0.08s ease, background 0.12s ease;
+}
+.tbtn.down, .tbtn:active { transform: scale(0.93); background: rgba(60, 90, 170, 0.75); }
+.tbtn.steer { font-size: 26px; }
+#btnLeft { left: 4%; }
+#btnRight { left: calc(4% + 88px); }
+
+.right-cluster {
+  position: absolute;
+  right: 4%;
+  bottom: 4%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+}
+.tbtn.nitro {
+  position: relative;
+  bottom: 0;
+  width: 92px;
+  height: 92px;
+  font-size: 15px;
+  border-color: rgba(90, 210, 255, 0.6);
+  background: rgba(12, 40, 66, 0.62);
+  box-shadow: 0 0 22px rgba(60, 190, 255, 0.25) inset;
+}
+.tbtn.small {
+  position: relative;
+  bottom: 0;
+  width: 68px;
+  height: 68px;
+  font-size: 12px;
+  border-color: rgba(255, 150, 120, 0.5);
+  background: rgba(60, 22, 20, 0.55);
+}
+
+/* keyboard-only players don't need steering pads */
+@media (hover: hover) and (pointer: fine) {
+  .tbtn.steer { display: none; }
+}
+
+/* ------------------------------------------------------------ overlays */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: grid;
+  place-items: center;
+  padding: 6% 7%;
+  background: radial-gradient(circle at 50% 40%, rgba(10, 16, 36, 0.72), rgba(4, 6, 14, 0.93));
+  backdrop-filter: blur(5px);
+  animation: fade 0.28s ease;
+}
+.overlay.hidden { display: none; }
+
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+.panel {
+  width: 100%;
+  max-width: 430px;
+  text-align: center;
+  padding: 26px 22px 22px;
+  border-radius: 22px;
+  border: 1px solid rgba(140, 175, 255, 0.2);
+  background: linear-gradient(180deg, rgba(18, 26, 52, 0.92), rgba(9, 12, 24, 0.94));
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+}
+.panel.compact { max-width: 340px; }
+
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  padding: 6px 12px;
+  border-radius: 999px;
+  color: #9fe9ff;
+  border: 1px solid rgba(110, 220, 255, 0.4);
+  background: rgba(20, 70, 100, 0.32);
+}
+.badge.danger {
+  color: #ffd0b0;
+  border-color: rgba(255, 140, 90, 0.5);
+  background: rgba(120, 40, 20, 0.4);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+.logo {
+  margin: 14px 0 6px;
+  font-size: clamp(34px, 11vw, 50px);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  line-height: 0.95;
+  background: linear-gradient(180deg, #ffffff 0%, #ffd54a 60%, #ff7a2f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 4px 14px rgba(255, 150, 40, 0.35));
+}
+.logo span {
+  display: block;
+  font-size: 0.72em;
+  background: linear-gradient(180deg, #9fe9ff 0%, #4d7cff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.logo.small { font-size: clamp(24px, 8vw, 34px); margin-top: 10px; }
+
+.tag {
+  margin: 10px 4px 20px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #a9b7d8;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.cta {
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+  padding: 16px 20px;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: #10131f;
+  border: 0;
+  border-radius: 14px;
+  cursor: pointer;
+  background: linear-gradient(180deg, #ffe680, #ffa227);
+  box-shadow: 0 10px 26px rgba(255, 160, 40, 0.32), 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+  transition: transform 0.1s ease, filter 0.15s ease;
+}
+.cta:hover { filter: brightness(1.07); }
+.cta:active { transform: translateY(1px) scale(0.99); }
+
+.ghost {
+  display: block;
+  width: 100%;
+  margin: 10px auto 0;
+  padding: 12px 16px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #c3d0ee;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(150, 180, 255, 0.22);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.ghost:hover { background: rgba(120, 160, 255, 0.16); }
+
+.best {
+  margin-top: 14px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: #8ea3cc;
+}
+
+.controls {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(140, 175, 255, 0.16);
+  display: grid;
+  gap: 7px;
+}
+.controls .row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  color: #9fadd0;
+  font-weight: 500;
+}
+.controls .k {
+  color: #dbe6ff;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.controls .hintrow { opacity: 0.75; font-size: 11px; }
+.controls .hintrow span:last-child { text-align: right; }
+
+/* --------------------------------------------------------- game over */
+.stats {
+  margin: 18px 0 4px;
+  display: grid;
+  gap: 8px;
+}
+.stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 10px 14px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(140, 175, 255, 0.12);
+}
+.lbl { font-size: 11px; letter-spacing: 0.16em; font-weight: 700; color: #93a2c6; }
+.val { font-size: 19px; font-weight: 900; color: #fff; }
+.val.accent { color: #ffd54a; }
+
+@media (max-height: 700px) {
+  .tag { display: none; }
+  .controls { display: none; }
+  .panel { padding: 18px 16px; }
+  .logo { font-size: 30px; }
+}
