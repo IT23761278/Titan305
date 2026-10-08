@@ -199,10 +199,14 @@ else {
   if (Game.mode === 'over') {
     try {
       getEl('btnAgain').fire('click');
+      // the state must be pristine immediately after the click
+      if (player.lives !== 3) errors.push('lives not reset on restart: ' + player.lives);
+      if (Math.floor(player.distance) !== 0) errors.push('distance not reset on restart: ' + player.distance);
+      if (Game.overtakes !== 0 || Game.score !== 0) errors.push('score/overtakes not reset on restart');
+      // ...and the fresh race must still be running five seconds later
+      TR.Input.left = TR.Input.right = TR.Input.brake = TR.Input.nitro = false;
       for (let i = 0; i < 300; i++) step(16.7);
-      if (Game.mode !== 'playing') errors.push('restart failed');
-      if (player.lives !== 3) errors.push('lives not reset: ' + player.lives);
-      if (player.distance > 400) warnings.push('distance not reset on restart: ' + player.distance.toFixed(1));
+      if (Game.mode !== 'playing') errors.push('restart did not survive 5s: ' + Game.mode);
     } catch (e) { errors.push('restart: ' + e.stack); }
   }
 

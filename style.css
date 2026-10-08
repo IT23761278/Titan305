@@ -37,6 +37,7 @@ html, body {
   border-radius: 16px;
   overflow: hidden;
   background: #0b1020;
+  container-type: size;      /* children scale with the stage, not the window */
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(120, 160, 255, 0.14);
 }
 
@@ -67,11 +68,14 @@ body.in-game #topbar { opacity: 0.9; pointer-events: auto; }
 .icon {
   width: 44px;
   height: 44px;
+  height: clamp(30px, 5.4cqh, 46px);
+  width: clamp(30px, 5.4cqh, 46px);
   border-radius: 12px;
   border: 1px solid rgba(150, 180, 255, 0.28);
   background: rgba(8, 12, 26, 0.6);
   color: #dbe6ff;
   font-size: 17px;
+  font-size: clamp(12px, 2cqh, 18px);
   line-height: 1;
   display: grid;
   place-items: center;
@@ -100,11 +104,15 @@ body.in-game #topbar { opacity: 0.9; pointer-events: auto; }
   bottom: 4%;
   width: 76px;
   height: 76px;
+  height: clamp(46px, 11cqh, 92px);
+  width: clamp(46px, 11cqh, 92px);
+  aspect-ratio: 1;
   border-radius: 50%;
   border: 1px solid rgba(160, 190, 255, 0.35);
   background: rgba(10, 16, 32, 0.55);
   color: #e8f0ff;
   font-size: 22px;
+  font-size: clamp(13px, 3.2cqh, 26px);
   font-weight: 800;
   font-family: inherit;
   display: grid;
@@ -116,9 +124,9 @@ body.in-game #topbar { opacity: 0.9; pointer-events: auto; }
   transition: transform 0.08s ease, background 0.12s ease;
 }
 .tbtn.down, .tbtn:active { transform: scale(0.93); background: rgba(60, 90, 170, 0.75); }
-.tbtn.steer { font-size: 26px; }
+.tbtn.steer { font-size: clamp(15px, 3.8cqh, 30px); }
 #btnLeft { left: 4%; }
-#btnRight { left: calc(4% + 88px); }
+#btnRight { left: calc(4% + clamp(54px, 12cqh, 104px)); }
 
 .right-cluster {
   position: absolute;
@@ -127,15 +135,17 @@ body.in-game #topbar { opacity: 0.9; pointer-events: auto; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: clamp(7px, 1.6cqh, 14px);
   pointer-events: none;
 }
 .tbtn.nitro {
   position: relative;
   bottom: 0;
-  width: 92px;
-  height: 92px;
-  font-size: 15px;
+  width: clamp(56px, 13cqh, 108px);
+  height: clamp(56px, 13cqh, 108px);
+  font-size: clamp(10px, 2.2cqh, 16px);
+  font-weight: 900;
+  letter-spacing: 0.06em;
   border-color: rgba(90, 210, 255, 0.6);
   background: rgba(12, 40, 66, 0.62);
   box-shadow: 0 0 22px rgba(60, 190, 255, 0.25) inset;
@@ -143,9 +153,11 @@ body.in-game #topbar { opacity: 0.9; pointer-events: auto; }
 .tbtn.small {
   position: relative;
   bottom: 0;
-  width: 68px;
-  height: 68px;
-  font-size: 12px;
+  width: clamp(40px, 9.5cqh, 80px);
+  height: clamp(40px, 9.5cqh, 80px);
+  font-size: clamp(8px, 1.7cqh, 12px);
+  font-weight: 900;
+  letter-spacing: 0.06em;
   border-color: rgba(255, 150, 120, 0.5);
   background: rgba(60, 22, 20, 0.55);
 }
@@ -175,7 +187,7 @@ body.in-game #topbar { opacity: 0.9; pointer-events: auto; }
   width: 100%;
   max-width: 430px;
   text-align: center;
-  padding: 26px 22px 22px;
+  padding: clamp(14px, 4cqw, 26px) clamp(12px, 3.4cqw, 22px) clamp(12px, 3.4cqw, 22px);
   border-radius: 22px;
   border: 1px solid rgba(140, 175, 255, 0.2);
   background: linear-gradient(180deg, rgba(18, 26, 52, 0.92), rgba(9, 12, 24, 0.94));
@@ -187,9 +199,10 @@ body.in-game #topbar { opacity: 0.9; pointer-events: auto; }
   display: inline-block;
   font-size: 11px;
   font-weight: 800;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.18em;
   padding: 6px 12px;
   border-radius: 999px;
+  font-size: clamp(8.5px, 2cqw, 11px);
   color: #9fe9ff;
   border: 1px solid rgba(110, 220, 255, 0.4);
   background: rgba(20, 70, 100, 0.32);
@@ -204,7 +217,7 @@ body.in-game #topbar { opacity: 0.9; pointer-events: auto; }
 
 .logo {
   margin: 14px 0 6px;
-  font-size: clamp(34px, 11vw, 50px);
+  font-size: clamp(26px, 8.2cqw, 50px);
   font-weight: 900;
   letter-spacing: 0.06em;
   line-height: 0.95;
@@ -222,11 +235,11 @@ body.in-game #topbar { opacity: 0.9; pointer-events: auto; }
   background-clip: text;
   color: transparent;
 }
-.logo.small { font-size: clamp(24px, 8vw, 34px); margin-top: 10px; }
+.logo.small { font-size: clamp(18px, 6cqw, 34px); margin-top: 10px; }
 
 .tag {
   margin: 10px 4px 20px;
-  font-size: 13.5px;
+  font-size: clamp(10.5px, 2.5cqw, 13.5px);
   line-height: 1.55;
   color: #a9b7d8;
   font-weight: 500;
@@ -240,6 +253,7 @@ body.in-game #topbar { opacity: 0.9; pointer-events: auto; }
   padding: 16px 20px;
   font-family: inherit;
   font-size: 17px;
+  font-size: clamp(12px, 3.1cqw, 18px);
   font-weight: 900;
   letter-spacing: 0.12em;
   color: #10131f;
@@ -260,6 +274,7 @@ body.in-game #topbar { opacity: 0.9; pointer-events: auto; }
   padding: 12px 16px;
   font-family: inherit;
   font-size: 13px;
+  font-size: clamp(10.5px, 2.4cqw, 13.5px);
   font-weight: 700;
   letter-spacing: 0.08em;
   color: #c3d0ee;
@@ -274,6 +289,7 @@ body.in-game #topbar { opacity: 0.9; pointer-events: auto; }
 .best {
   margin-top: 14px;
   font-size: 12px;
+  font-size: clamp(9.5px, 2.2cqw, 12px);
   font-weight: 800;
   letter-spacing: 0.2em;
   color: #8ea3cc;
@@ -291,6 +307,7 @@ body.in-game #topbar { opacity: 0.9; pointer-events: auto; }
   justify-content: space-between;
   gap: 12px;
   font-size: 12px;
+  font-size: clamp(9px, 2.2cqw, 12.5px);
   color: #9fadd0;
   font-weight: 500;
 }
@@ -300,7 +317,7 @@ body.in-game #topbar { opacity: 0.9; pointer-events: auto; }
   letter-spacing: 0.04em;
   white-space: nowrap;
 }
-.controls .hintrow { opacity: 0.75; font-size: 11px; }
+.controls .hintrow { opacity: 0.75; font-size: clamp(8.5px, 2cqw, 11px); }
 .controls .hintrow span:last-child { text-align: right; }
 
 /* --------------------------------------------------------- game over */
@@ -313,18 +330,23 @@ body.in-game #topbar { opacity: 0.9; pointer-events: auto; }
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  padding: 10px 14px;
+  padding: clamp(6px, 1.8cqw, 10px) clamp(9px, 2.4cqw, 14px);
   border-radius: 11px;
   background: rgba(255, 255, 255, 0.045);
   border: 1px solid rgba(140, 175, 255, 0.12);
 }
-.lbl { font-size: 11px; letter-spacing: 0.16em; font-weight: 700; color: #93a2c6; }
-.val { font-size: 19px; font-weight: 900; color: #fff; }
+.lbl { font-size: clamp(8.5px, 2cqw, 11px); letter-spacing: 0.16em; font-weight: 700; color: #93a2c6; }
+.val { font-size: clamp(13px, 3.4cqw, 19px); font-weight: 900; color: #fff; }
 .val.accent { color: #ffd54a; }
 
-@media (max-height: 700px) {
+/* very short stages (landscape phones): keep the panel readable */
+@container (max-height: 620px) {
   .tag { display: none; }
   .controls { display: none; }
-  .panel { padding: 18px 16px; }
-  .logo { font-size: 30px; }
+  .logo { font-size: clamp(20px, 7cqw, 32px); }
+}
+@supports not (container-type: size) {
+  @media (max-height: 620px) {
+    .tag, .controls { display: none; }
+  }
 }

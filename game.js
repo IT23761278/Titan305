@@ -402,7 +402,6 @@
       this.reset();
       this.mode = 'playing';
       UI.showOverlay(null);
-      UI.hideMenuHudHint();
       Input.steerDrag = 0;
     },
 
@@ -845,6 +844,7 @@
 
   function crash(reason) {
     if (Game.mode !== 'playing' || player.lives <= 0) return;
+    if (player.invuln > 0) return;          // still blinking from the last crash
     player.lives = Math.max(0, player.lives - 1);
     player.combo = 1; player.comboT = 0;
     player.invuln = 2.4;
@@ -1068,7 +1068,7 @@
         ctx.arc(x, y + t.h * 0.1, t.w * 0.14, 0, Math.PI * 2);
         ctx.fill();
         const grd = ctx.createRadialGradient(x - t.w * 0.25, y - t.h * 0.3, t.w * 0.15, x, y - t.h * 0.15, t.w * 0.85);
-        grd.addColorStop(0, shade(themeLeafLight(th), 0.18));
+        grd.addColorStop(0, shade(th.leaf, 0.18));
         grd.addColorStop(1, th.leaf2);
         ctx.fillStyle = grd;
         ctx.beginPath();
@@ -1081,7 +1081,6 @@
       }
     }
   }
-  function themeLeafLight(th) { return th.leaf; }
 
   /* ---- vehicles --------------------------------------------------------- */
 
@@ -1491,8 +1490,8 @@
     }
 
     buildRoadRows();
-    // night darkening happens in layers so headlights pop
-    drawGroundUnder(th);
+    // night darkening is layered on *after* the scenery so headlights pop
+    drawGround(th);
     drawRoad(th);
     drawTrees(th);
     if (th.night > 0.02) {
@@ -1513,11 +1512,6 @@
     drawVignette(th);
     if (Game.mode !== 'menu') drawHud(th);
     drawCountdown();
-  }
-
-  function drawGroundUnder(th) {
-    // same as drawGround but kept separate so the night overlay can sit on top
-    drawGround(th);
   }
 
   /* ======================================================== 9. GAME FLOW */
@@ -1571,11 +1565,6 @@
       Sound.init();
       Sound.setQuiet(Game.muted);
       this.updateMuteButtons();
-    },
-
-    hideMenuHudHint() {
-      const h = document.getElementById('hint');
-      if (h) { h.classList.add('fade'); setTimeout(() => h.remove(), 700); }
     },
 
     showGameOver(isBest) {
