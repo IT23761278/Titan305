@@ -2,9 +2,12 @@
 
 An endless arcade **highway racer** that runs in the browser — vanilla JavaScript, Canvas 2D, **zero dependencies, zero build step**. Open `index.html` and drive.
 
-**[▶ Play it here](https://it23761278.github.io/Titan305/)** — or just open `index.html` locally.
+![platform](https://img.shields.io/badge/platform-desktop%20%2B%20mobile-4d7cff)
+![dependencies](https://img.shields.io/badge/dependencies-none-3f9d52)
 
-![portrait 9:16 arcade racer](https://img.shields.io/badge/platform-desktop%20%2B%20mobile-4d7cff)
+**Play it:** open `index.html` in a browser, or serve the folder. To put it online for
+free, turn on **Settings → Pages → Deploy from branch → `main` / `/ (root)`** and it
+will be live at `https://<your-username>.github.io/Titan305/`.
 
 ---
 
