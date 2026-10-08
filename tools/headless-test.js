@@ -264,7 +264,7 @@ else {
   let prevLives = TR.player.lives;
   const aiThemes = new Set();
   try {
-    for (let i = 0; i < 60 * 480; i++) {      // up to 8 simulated minutes
+    for (let i = 0; i < 60 * 600; i++) {      // up to 10 simulated minutes
       aiStep();
       step(16.7);
       aiFrames++;
@@ -310,6 +310,14 @@ else {
   console.log('crashes         :', JSON.stringify(crashLog));
   console.log('blocked frames  :', wallHits, wallSample ? JSON.stringify(wallSample) : '');
   console.log('themes seen     :', [...aiThemes].join(' | '));
+  const pk = TR.peek();
+  console.log('arrays          : traffic=' + pk.traffic.length + ' trees=' + pk.trees.length +
+              ' particles=' + pk.particles.length + ' popups=' + pk.popups.length + ' marks=' + pk.marks.length);
+  if (pk.traffic.length > 40) errors.push('traffic array leaked: ' + pk.traffic.length);
+  if (pk.trees.length > 200) errors.push('tree array leaked: ' + pk.trees.length);
+  if (pk.particles.length > 340) errors.push('particle array leaked: ' + pk.particles.length);
+  if (pk.popups.length > 20) errors.push('popup array leaked: ' + pk.popups.length);
+  if (pk.marks.length > 60) errors.push('tyre-mark array leaked: ' + pk.marks.length);
   if (TR.Game.mode === 'playing' && TR.player.distance < 1500) warnings.push('AI driver could not get far: ' + TR.player.distance.toFixed(0) + ' m');
   if (wallHits > 0) warnings.push('fully-blocked road bands appeared in ' + wallHits + ' frames');
 

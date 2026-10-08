@@ -1634,7 +1634,7 @@
   window.TitanRacer = {
     Game, player, UI, Input, Sound,
     start: () => Game.start(),
-    peek: () => ({ traffic, trees, particles, roadCenter, roadSlope, LANE_X, ROAD_HALF, MAX_SPEED, auditPath }),
+    peek: () => ({ traffic, trees, particles, popups, marks, roadCenter, roadSlope, LANE_X, ROAD_HALF, MAX_SPEED, auditPath }),
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
