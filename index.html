@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#070b16">
+<meta name="description" content="Titan Racer — a fast arcade highway racer you can play in the browser. Dodge traffic, chain overtakes, burn nitro.">
+<title>Titan Racer — Arcade Highway Race</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23070b16'/><rect x='30' y='16' width='40' height='68' rx='12' fill='%23e8262d'/><rect x='38' y='30' width='24' height='16' rx='6' fill='%23131825'/><rect x='38' y='56' width='24' height='12' rx='5' fill='%23131825'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <div id="stage">
+    <canvas id="game" width="540" height="960" aria-label="Titan Racer game canvas"></canvas>
+
+    <!-- in-game buttons -->
+    <div id="topbar">
+      <button id="btnSound" class="icon" title="Sound on/off (M)" aria-label="Toggle sound">&#128266;</button>
+      <button id="btnPause" class="icon" title="Pause (P)" aria-label="Pause">&#10074;&#10074;</button>
+    </div>
+
+    <!-- touch controls -->
+    <div id="touch">
+      <button id="btnLeft"  class="tbtn steer" aria-label="Steer left">&#9664;</button>
+      <button id="btnRight" class="tbtn steer" aria-label="Steer right">&#9654;</button>
+      <div class="right-cluster">
+        <button id="btnBrake" class="tbtn small">BRAKE</button>
+        <button id="btnNitro" class="tbtn nitro">NITRO</button>
+      </div>
+    </div>
+
+    <!-- ================= MENU ================= -->
+    <div class="overlay" id="menu">
+      <div class="panel">
+        <div class="badge">ENDLESS HIGHWAY</div>
+        <h1 class="logo">TITAN<span>RACER</span></h1>
+        <p class="tag">Dodge the traffic. Chain overtakes. Burn the nitro before the sun goes down&hellip; and comes back up.</p>
+        <button class="cta" id="btnStart">START RACE</button>
+        <div class="best" id="bestLabel">NO RECORDS YET</div>
+        <div class="controls">
+          <div class="row"><span class="k">&#9664; &#9654; / A D</span><span>steer</span></div>
+          <div class="row"><span class="k">SPACE / hold touch</span><span>nitro boost</span></div>
+          <div class="row"><span class="k">&#9660; / S</span><span>brake</span></div>
+          <div class="row"><span class="k">P &middot; M</span><span>pause &middot; mute</span></div>
+          <div class="row hintrow"><span class="k">touch</span><span>drag anywhere to steer, or use the on-screen buttons</span></div>
+        </div>
+        <button class="ghost" id="soundToggle">&#128266; Sound on</button>
+      </div>
+    </div>
+
+    <!-- ================= PAUSE ================= -->
+    <div class="overlay hidden" id="pause">
+      <div class="panel compact">
+        <h2 class="logo small">PAUSED</h2>
+        <button class="cta" id="btnResume">RESUME</button>
+        <button class="ghost" id="btnRestart">RESTART RACE</button>
+        <button class="ghost" id="btnQuit">QUIT TO MENU</button>
+      </div>
+    </div>
+
+    <!-- ================= GAME OVER ================= -->
+    <div class="overlay hidden" id="over">
+      <div class="panel">
+        <div class="badge danger" id="newRecord">NEW RECORD</div>
+        <h2 class="logo small">RACE OVER</h2>
+        <div class="stats">
+          <div class="stat"><span class="lbl">DISTANCE</span><span class="val" id="statDistance">0 m</span></div>
+          <div class="stat"><span class="lbl">SCORE</span><span class="val accent" id="statScore">0</span></div>
+          <div class="stat"><span class="lbl">TOP SPEED</span><span class="val" id="statTop">0 km/h</span></div>
+          <div class="stat"><span class="lbl">OVERTAKES</span><span class="val" id="statOvertakes">0</span></div>
+          <div class="stat"><span class="lbl">BONUS POINTS</span><span class="val" id="statBonus">0</span></div>
+        </div>
+        <div class="best" id="bestBig">BEST 0</div>
+        <button class="cta" id="btnAgain">RACE AGAIN</button>
+        <button class="ghost" id="btnMenu">MENU</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
